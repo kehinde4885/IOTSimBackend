@@ -1,32 +1,32 @@
-class Sensor {
+export default class Sensor {
   constructor({ sensorId, type, interval, sendData }) {
     //InConfig
     this.sendDataToWS = sendData;
     this.sensorId = sensorId;
     this.interval = interval;
-    //InConfig
     this.type = type;
+    //InConfig
     this.timer = null;
     this.value = null;
 
-    console.log(sendData);
+    console.log("SENSOR CLASS SAYS:SENSOR CREATED");
   }
 
   start() {
+    //used to send updates to the websocket server
     if (this.timer) return;
 
     this.timer = setInterval(() => {
-      const value = this.update();
-
       this.sendDataToWS({
         sensorId: this.sensorId,
-        value,
+        value: this.value,
         timestamp: Date.now(),
       });
     }, this.interval);
   }
 
   stop() {
+    //used to cleanup the interval function created
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = null;
@@ -38,17 +38,5 @@ class Sensor {
   }
 }
 
-class LightSensor extends Sensor {
-  constructor(config) {
-    super({ ...config, type: "Light" });
 
-    //on by default
-    this.value = "On";
-  }
 
-  update() {
-    this.value = this.value === "On" ? "off" : "On";
-  }
-}
-
-export { LightSensor };
