@@ -6,6 +6,13 @@ import { sendToWS } from "./wsclient.js";
 const app = express();
 const sensorManager = new SensorManager(sendToWS);
 
+const SENSOR_TICK = 2000;
+
+//Registering a simulation tick to update all sensors every second;
+setInterval(() => {
+  sensorManager.simulateAll();
+}, SENSOR_TICK);
+
 app.use(express.json());
 app.use(cors());
 
@@ -22,14 +29,11 @@ app.post("/api/sensors/create", (req, res) => {
   }
 });
 
-
 //READ ALL SENSORS-READ
 app.get("/api/sensors", (req, res) => {
   //read list of sensors
   res.json(sensorManager.listSensors());
 });
-
-
 
 //UPDATE SENSOR
 app.post("/api/sensors/update/:id", (req, res) => {
@@ -45,8 +49,6 @@ app.post("/api/sensors/update/:id", (req, res) => {
 
   res.json({ success: true });
 });
-
-
 
 //DELETE SENSOR
 app.delete("/api/sensors/:id", (req, res) => {

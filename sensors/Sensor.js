@@ -7,22 +7,13 @@ export default class Sensor {
     this.type = type;
     //InConfig
     this.timer = null;
-    this.value = null;
 
-    console.log("SENSOR CLASS SAYS:SENSOR CREATED");
+    console.log("BASE SENSOR CLASS SAYS:SENSOR CREATED");
   }
 
   start() {
     //used to send updates to the websocket server
-    if (this.timer) return;
-
-    this.timer = setInterval(() => {
-      this.sendDataToWS({
-        sensorId: this.sensorId,
-        value: this.value,
-        timestamp: Date.now(),
-      });
-    }, this.interval);
+    //override in child subclass
   }
 
   stop() {
@@ -33,10 +24,16 @@ export default class Sensor {
     }
   }
 
+  itemize() {
+    //return basic info about the sensor
+  }
+
   update() {
+    //overriden in child subclass``
+  }
+
+  simulate() {
     //overriden in child subclass
+    console.log("BASE SENSOR CLASS SIMULATE METHOD CALLED");
   }
 }
-
-
-

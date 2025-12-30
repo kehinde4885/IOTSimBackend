@@ -8,7 +8,6 @@ class SensorManager {
   constructor(sendData) {
     this.sensors = new Map();
     this.sendData = sendData;
-    
   }
 
   getSensor(id) {
@@ -45,12 +44,20 @@ class SensorManager {
     //get the maps values, store it in an array,
     //then loop over the array
     //also returns an array of the sensor objects
-    return [...this.sensors.values()].map((s) => ({
-      sensorId: s.sensorId,
-      type: s.type,
-      interval: s.interval,
-      value: s.value,
-    }));
+    // return [...this.sensors.values()].map((s) => ({
+    //   sensorId: s.sensorId,
+    //   type: s.type,
+    //   interval: s.interval,
+    //   value: s.value,
+    // }));
+
+    return [...this.sensors.values()].map((s) => {return s.itemize()});
+  }
+
+  simulateAll() {
+    for (let sensor of this.sensors.values()) {
+      sensor.simulate();
+    }
   }
 
   tickPrint() {
@@ -76,7 +83,6 @@ class SensorManager {
           sendData: this.sendData,
         });
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -84,9 +90,7 @@ class SensorManager {
 }
 
 export { SensorManager };
-  
-  
-  
+
 //NOTES
 //Use Mapping instead of if/else
 // const sensorRegistry = {

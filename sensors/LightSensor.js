@@ -5,13 +5,40 @@ class LightSensor extends Sensor {
     super({ ...config, type: "Light" });
 
     //on by default
-    this.value = "On";
+    this.value = true;
+  }
+
+  start() {
+    //override start to send immediate data on start
+    //super.start();
+
+    if (this.timer) return;
+
+    this.timer = setInterval(() => {
+      this.sendDataToWS({
+        sensorId: this.sensorId,
+        value: this.value,
+        timestamp: Date.now(),
+      });
+    }, this.interval);
+  }
+
+  itemize() {
+    return {
+      sensorId: this.sensorId,
+      type: this.type,
+      interval: this.interval,
+      value: this.value,
+    };
+  }
+
+  simulate() {
+    //toggle light state
   }
 
   update() {
-    this.value = this.value === "On" ? "off" : "On";
+    this.value = !this.value;
   }
 }
 
-
-export {LightSensor}
+export { LightSensor };
