@@ -5,9 +5,10 @@ import TemperatureSensor from "./sensors/TemperatureSensor.js";
 
 class SensorManager {
   //sensor manager contains a map of sensors
-  constructor(sendData) {
+  constructor(sendData, envManager) {
     this.sensors = new Map();
     this.sendData = sendData;
+    this.envManager = envManager;
   }
 
   getSensor(id) {
@@ -51,7 +52,9 @@ class SensorManager {
     //   value: s.value,
     // }));
 
-    return [...this.sensors.values()].map((s) => {return s.itemize()});
+    return [...this.sensors.values()].map((s) => {
+      return s.itemize();
+    });
   }
 
   simulateAll() {
@@ -80,6 +83,7 @@ class SensorManager {
       if (type === "Temperature") {
         return new TemperatureSensor({
           ...config,
+          getAmbientTemp: ()=> this.envManager.getAmbientTemperature(),
           sendData: this.sendData,
         });
       }

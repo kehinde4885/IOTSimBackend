@@ -1,10 +1,14 @@
 import express from "express";
 import cors from "cors";
+import { EnvManager } from "./EnvManager.js";
 import { SensorManager } from "./SensorManager.js";
 import { sendToWS } from "./wsclient.js";
 
 const app = express();
-const sensorManager = new SensorManager(sendToWS);
+
+const envManager = new EnvManager();
+
+const sensorManager = new SensorManager(sendToWS, envManager);
 
 const SENSOR_TICK = 2000;
 
@@ -55,6 +59,11 @@ app.delete("/api/sensors/:id", (req, res) => {
   //delete sensors
   sensorManager.deleteSensor(req.params.id);
   res.send("sensor deleted");
+});
+
+//
+app.post("/api/env/update", (req, res) => {
+  envManager.setAmbientTemperature(99);
 });
 
 app.listen(3000, () => {
