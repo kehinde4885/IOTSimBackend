@@ -8,6 +8,10 @@ class LightSensor extends Sensor {
     this.value = true;
   }
 
+  getValue() {
+    return this.value;
+  }
+
   start() {
     //override start to send immediate data on start
     //super.start();

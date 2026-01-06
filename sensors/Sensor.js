@@ -11,6 +11,10 @@ export default class Sensor {
     console.log("BASE SENSOR CLASS SAYS:SENSOR CREATED");
   }
 
+  getValue() {
+    //used to get the value of sensor
+  }
+
   start() {
     //used to send updates to the websocket server
     //override in child subclass

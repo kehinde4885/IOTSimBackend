@@ -14,6 +14,10 @@ class TemperatureSensor extends Sensor {
     this.maxTemp = config.maxTemp ?? 100;
   }
 
+  getValue() {
+    return this.currentTemp;
+  }
+
   start() {
     this.timer = setInterval(() => {
       this.sendDataToWS({
