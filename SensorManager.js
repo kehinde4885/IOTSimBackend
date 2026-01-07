@@ -11,8 +11,9 @@ class SensorManager {
     this.envManager = envManager;
   }
 
+
   getSensor(id) {
-    return this.sensors.get(id) || null;
+       return this.sensors.get(id) || null;
   }
 
   createSensor(config) {
@@ -29,7 +30,8 @@ class SensorManager {
     //store sensor in key value pair
     this.sensors.set(sensor.sensorId, sensor);
 
-    this.tickPrint();
+
+    //this.tickPrint();
   }
 
   deleteSensor(sensorId) {
@@ -83,7 +85,7 @@ class SensorManager {
       if (type === "Temperature") {
         return new TemperatureSensor({
           ...config,
-          getAmbientTemp: ()=> this.envManager.getAmbientTemperature(),
+          getAmbientTemp: () => this.envManager.getAmbientTemperature(),
           sendData: this.sendData,
         });
       }

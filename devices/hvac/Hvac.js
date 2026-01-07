@@ -1,29 +1,47 @@
 import { HVAC_MODES } from "./hvacModes.js";
 
 class HVAC {
-  constructor({ heatingRate = 0.05, coolingRate = 0.05 , tolerance = 0.5, targetTemp = 24}) {
+  constructor(config) {
+    console.log("HVAC using config", config);
     console.log("HVAC DEVICE CREATED");
-    this.heatingRate = heatingRate;
-    this.coolingRate = coolingRate;
 
-    //temp sensor
+    //InConfig
+    this.id = config.deviceId;
+    this.tempSensorId = config.TempSensorId;
+    this.getTempSensor = config.getTempSensor;
+    this.changeAmbientTemp = config.changeAmbientTempFunction;
+    this.type = "HVAC";
 
-    this.tolerance = tolerance;
-    this.targetTemp = 24;
+    //InConfig
 
     this.mode = HVAC_MODES.OFF;
-   
+
+    this.heatingRate = 0.05;
+    this.coolingRate = 0.05;
+    this.tolerance = 0.5;
+    this.targetTemp = 24;
   }
 
   setTargetTemp(temp) {
     this.targetTemp = temp;
   }
 
+  simulate() {
+    //CALED in HVAC SIMUL FUNCTION
 
-  update(currentTemp, dt) {
-    
+    const TempSensor = this.getTempSensor(this.tempSensorId);
+
+    if (!TempSensor) {
+      this.mode = HVAC_MODES.OFF;
+      return;
+    }
+
+    const currentTemp = TempSensor.getValue();
+
+    console.log("Temp sensor says", currentTemp);
+
     //dt is amount of time passed since last update in seconds
-    
+
     //return what the hvac should do based on current temperature
     if (currentTemp > this.targetTemp + this.tolerance) {
       this.mode = HVAC_MODES.COOL;
@@ -33,10 +51,20 @@ class HVAC {
       this.mode = HVAC_MODES.OFF;
     }
 
+    console.log("HVAC in mode:", this.mode);
     //Apply physical effect
+    let change = 0;
     //return by how much the temperature should change
-    if (this.mode === HVAC_MODES.HEAT) return this.heatingRate * dt;
-    if (this.mode === HVAC_MODES.COOL) return -this.coolingRate * dt;
+    if (this.mode === HVAC_MODES.HEAT) {
+      change = this.heatingRate;
+    }
+    if (this.mode === HVAC_MODES.COOL) {
+      change = -this.coolingRate;
+    }
+
+    //get ambient temperature and change it
+    //GET env manager
+    this.changeAmbientTemp(change);
 
     return 0; //no change
   }

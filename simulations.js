@@ -7,12 +7,10 @@ function startSensorSimulation(sensorManager) {
   }, SENSOR_TICK);
 }
 
-
-function startDeviceSimulation() {
-
-  
-
-
+function startDeviceSimulation(deviceManager) {
+  return setInterval(() => {
+    deviceManager.simulateAll();
+  }, DEVICE_TICK);
 }
 
-export {startSensorSimulation}
+export { startSensorSimulation, startDeviceSimulation };

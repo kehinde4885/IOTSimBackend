@@ -7,7 +7,7 @@ import { createSensorRoutes } from "./routes/sensors.routes.js";
 import { createEnvRoutes } from "./routes/env.router.js";
 import { createDeviceRoutes } from "./routes/dev.router.js";
 import { DeviceManager } from "./devices/DevManager.js";
-import { startSensorSimulation } from "./simulations.js";
+import { startDeviceSimulation, startSensorSimulation } from "./simulations.js";
 
 const app = express();
 
@@ -20,6 +20,9 @@ const devManager = new DeviceManager(envManager, sensorManager);
 //START SIMULATIONS
 startSensorSimulation(sensorManager);
 
+startDeviceSimulation(devManager)
+
+//
 
 app.use(express.json());
 app.use(cors());
@@ -27,7 +30,7 @@ app.use(cors());
 //at this path, mount this router(function returns a router)
 app.use("/api/sensors", createSensorRoutes(sensorManager));
 
-app.use("api/env", createEnvRoutes(envManager));
+app.use("/api/env", createEnvRoutes(envManager));
 
 app.use("/api/devices", createDeviceRoutes(devManager));
 
