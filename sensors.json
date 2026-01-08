@@ -1,7 +1,0 @@
-[
-  { "sensorID": 1, "type": "Light", "initVal": "Off" },
-  { "sensorID": 2, "type": "Light", "initVal": "On" },
-  { "sensorID": 3, "type": "Light", "initVal": "Off" },
-  { "sensorID": 4, "type": "Light", "initVal": "On" },
-  { "sensorID": 5, "type": "Light", "initVal": "Off" }
-]

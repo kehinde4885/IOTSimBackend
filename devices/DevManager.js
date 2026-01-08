@@ -1,4 +1,4 @@
-import { HVAC } from "./hvac/Hvac.js";
+import { HVAC } from "./Hvac.js";
 
 export class DeviceManager {
   constructor(envManager, sensorManager) {

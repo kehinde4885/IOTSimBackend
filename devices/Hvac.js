@@ -1,4 +1,10 @@
-import { HVAC_MODES } from "./hvacModes.js";
+
+
+const HVAC_MODES = {
+  OFF: "OFF",
+  HEAT: "HEAT",
+  COOL: "COOL",
+}
 
 class HVAC {
   constructor(config) {
