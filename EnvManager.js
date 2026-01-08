@@ -14,6 +14,6 @@ export class EnvManager {
   changeAmbientTemperature(change) {
     this.ambientTemperature = this.ambientTemperature + change;
 
-    console.log("Ambient Temp is", this.ambientTemperature);
+   // console.log("Ambient Temp is", this.ambientTemperature);
   }
 }

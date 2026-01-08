@@ -5,15 +5,14 @@ import TemperatureSensor from "./sensors/TemperatureSensor.js";
 
 class SensorManager {
   //sensor manager contains a map of sensors
-  constructor(sendData, envManager) {
+  constructor(sendOverWebSocket, envManager) {
     this.sensors = new Map();
-    this.sendData = sendData;
+    this.sendOverWebSocket = sendOverWebSocket;
     this.envManager = envManager;
   }
 
-
   getSensor(id) {
-       return this.sensors.get(id) || null;
+    return this.sensors.get(id) || null;
   }
 
   createSensor(config) {
@@ -29,7 +28,6 @@ class SensorManager {
 
     //store sensor in key value pair
     this.sensors.set(sensor.sensorId, sensor);
-
 
     //this.tickPrint();
   }
@@ -78,7 +76,7 @@ class SensorManager {
       if (type === "Light") {
         return new LightSensor({
           ...config,
-          sendData: this.sendData,
+          sendOverWebSocket: this.sendOverWebSocket,
         });
       }
 
@@ -86,7 +84,14 @@ class SensorManager {
         return new TemperatureSensor({
           ...config,
           getAmbientTemp: () => this.envManager.getAmbientTemperature(),
-          sendData: this.sendData,
+          sendOverWebSocket: this.sendOverWebSocket,
+        });
+      }
+
+      if (type === "Door") {
+        return new DoorSensor({
+          ...config,
+          sendOverWebSocket: this.sendOverWebSocket,
         });
       }
     } catch (error) {

@@ -19,10 +19,10 @@ socket.addEventListener("close", () => {
   console.log("WEBSOCKET SAYS DISCONNECTED");
 });
 
-function sendToWS(data) {
+function sendOverWebSocket(data) {
   if (socket.readyState === WebSocket.OPEN) {
     socket.send(JSON.stringify(data));
   }
 }
 
-export { sendToWS };
+export { sendOverWebSocket };

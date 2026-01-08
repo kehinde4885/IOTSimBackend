@@ -38,7 +38,7 @@ class HVAC {
 
     const currentTemp = TempSensor.getValue();
 
-    console.log("Temp sensor says", currentTemp);
+   // console.log("Temp sensor says", currentTemp);
 
     //dt is amount of time passed since last update in seconds
 
@@ -51,7 +51,7 @@ class HVAC {
       this.mode = HVAC_MODES.OFF;
     }
 
-    console.log("HVAC in mode:", this.mode);
+    //console.log("HVAC in mode:", this.mode);
     //Apply physical effect
     let change = 0;
     //return by how much the temperature should change

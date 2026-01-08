@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { EnvManager } from "./EnvManager.js";
 import { SensorManager } from "./SensorManager.js";
-import { sendToWS } from "./wsclient.js";
+import { sendOverWebSocket } from "./wsclient.js";
 import { createSensorRoutes } from "./routes/sensors.routes.js";
 import { createEnvRoutes } from "./routes/env.router.js";
 import { createDeviceRoutes } from "./routes/dev.router.js";
@@ -13,7 +13,7 @@ const app = express();
 
 const envManager = new EnvManager();
 
-const sensorManager = new SensorManager(sendToWS, envManager);
+const sensorManager = new SensorManager(sendOverWebSocket, envManager);
 
 const devManager = new DeviceManager(envManager, sensorManager);
 

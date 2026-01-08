@@ -1,7 +1,7 @@
 export default class Sensor {
-  constructor({ sensorId, type, interval, sendData }) {
+  constructor({ sensorId, type, interval, sendOverWebSocket }) {
     //InConfig
-    this.sendDataToWS = sendData;
+    this.sendDataToWS = sendOverWebSocket;
     this.sensorId = sensorId;
     this.interval = interval;
     this.type = type;
