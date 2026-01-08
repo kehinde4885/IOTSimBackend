@@ -27,3 +27,5 @@ export const SensorRegistry = {
     inject: () => ({}),
   },
 };
+
+

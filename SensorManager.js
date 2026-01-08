@@ -86,6 +86,10 @@ class SensorManager {
       ...inject(this),
     });
   }
+
+  getSensorTypes() {
+    return Object.keys(SensorRegistry)
+  }
 }
 
 export { SensorManager };

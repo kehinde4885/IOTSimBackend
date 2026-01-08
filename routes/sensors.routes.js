@@ -24,6 +24,10 @@ export function createSensorRoutes(sensorManager) {
     res.json(sensorManager.listSensors());
   });
 
+  router.get("/types", (req, res) => {
+    res.json(sensorManager.getSensorTypes());
+  });
+
   //UPDATE SENSOR
   router.post("/update/:id", (req, res) => {
     const { id } = req.params;
@@ -45,8 +49,6 @@ export function createSensorRoutes(sensorManager) {
     sensorManager.deleteSensor(req.params.id);
     res.send("sensor deleted");
   });
-
-
 
   return router;
 }
