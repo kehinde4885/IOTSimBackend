@@ -1,4 +1,4 @@
-import Sensor from "./Sensor";
+import Sensor from "./Sensor.js";
 
 class DoorSensor extends Sensor {
   constructor(config) {

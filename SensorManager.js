@@ -1,5 +1,4 @@
-import { LightSensor } from "./sensors/LightSensor.js";
-import TemperatureSensor from "./sensors/TemperatureSensor.js";
+import { SensorRegistry } from "./sensors/SensorRegistry.js";
 
 //Look into singleton pattern for sensorManager
 
@@ -21,7 +20,7 @@ class SensorManager {
     }
 
     // create sensor
-    let sensor = this.helpCreateSensor(config, config.type);
+    let sensor = this.helpCreateSensor(config);
 
     //start sensor
     sensor.start();
@@ -69,52 +68,24 @@ class SensorManager {
     }, 2000);
   }
 
-  helpCreateSensor(config, type) {
-    //CLass Factory Pattern
-    //check notes below
-    try {
-      if (type === "Light") {
-        return new LightSensor({
-          ...config,
-          sendOverWebSocket: this.sendOverWebSocket,
-        });
-      }
+  helpCreateSensor(config) {
+    const entry = SensorRegistry[config.type];
 
-      if (type === "Temperature") {
-        return new TemperatureSensor({
-          ...config,
-          getAmbientTemp: () => this.envManager.getAmbientTemperature(),
-          sendOverWebSocket: this.sendOverWebSocket,
-        });
-      }
-
-      if (type === "Door") {
-        return new DoorSensor({
-          ...config,
-          sendOverWebSocket: this.sendOverWebSocket,
-        });
-      }
-    } catch (error) {
-      console.log(error);
+    if (!entry) {
+      throw new Error(`Unknown sensor type: ${config.type}`);
     }
+
+    //destructure entry
+    const { class: SensorClass, inject } = entry;
+
+    return new SensorClass({
+      ...config,
+      sendOverWebSocket: this.sendOverWebSocket,
+      //run the inject function
+      // getAmbientTemp: () => manager.envManager.getAmbientTemperature(),
+      ...inject(this),
+    });
   }
 }
 
 export { SensorManager };
-
-//NOTES
-//Use Mapping instead of if/else
-// const sensorRegistry = {
-//   Light: LightSensor,
-//   Temperature: TemperatureSensor
-// };
-
-// helpCreateSensor(config, type) {
-//   const SensorClass = sensorRegistry[type];
-//   if (!SensorClass) throw new Error("Unknown sensor type");
-
-//   return new SensorClass({
-//     ...config,
-//     sendData: this.sendData,
-//   });
-// }
