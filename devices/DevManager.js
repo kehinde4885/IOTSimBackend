@@ -1,4 +1,4 @@
-import { HVAC } from "./Hvac.js";
+import { DeviceRegistry } from "./DeviceRegistry.js";
 
 export class DeviceManager {
   constructor(envManager, sensorManager) {
@@ -8,6 +8,10 @@ export class DeviceManager {
 
     // console.log(this.sensorManager);
     // console.log(sensorManager);
+  }
+
+  getDeviceTypes() {
+    return Object.keys(DeviceRegistry)
   }
 
   //***create device based on config
@@ -30,12 +34,7 @@ export class DeviceManager {
 
     */
 
-    let device = new HVAC({
-      ...config,
-      getTempSensor: (id) => this.sensorManager.getSensor(id),
-      changeAmbientTempFunction: (change) =>
-        this.envManager.changeAmbientTemperature(change),
-    });
+    let device = this.helpCreateDevice(config);
 
     this.devices.set(config.deviceId, device);
   }
@@ -52,6 +51,24 @@ export class DeviceManager {
       return device;
 
       //      return s.itemize();
+    });
+  }
+
+  helpCreateDevice(config) {
+    const entry = DeviceRegistry[config.deviceType];
+
+    if (!entry) {
+      throw new Error(`Unknown Device Type: ${config.deviceType}`);
+    }
+
+    const { class: DeviceClass, inject } = entry;
+
+    return new DeviceClass({
+      ...config,
+      ...inject(this),
+      // getTempSensor: (id) => this.sensorManager.getSensor(id),
+      // changeAmbientTempFunction: (change) =>
+      //   this.envManager.changeAmbientTemperature(change),
     });
   }
 }

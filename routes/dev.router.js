@@ -8,6 +8,10 @@ export function createDeviceRoutes(devManager) {
     res.json(devManager.listDevices());
   });
 
+  router.get("/types", (req, res) => {
+    res.json(devManager.getDeviceTypes());
+  });
+
   router.post("/create", (req, res) => {
     console.log("Creating Device");
 
@@ -15,6 +19,8 @@ export function createDeviceRoutes(devManager) {
 
     try {
       devManager.createDevice(config);
+
+      res.json("success");
     } catch (error) {
       console.log(error);
     }
