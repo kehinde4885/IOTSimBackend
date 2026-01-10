@@ -18,7 +18,7 @@ class TemperatureSensor extends Sensor {
     return this.currentTemp;
   }
 
-  start() {
+  startTransmission() {
     this.timer = setInterval(() => {
       this.sendDataToWS({
         sensorId: this.sensorId,

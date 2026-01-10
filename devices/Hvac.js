@@ -1,19 +1,20 @@
-
+import Device from "./Device.js";
 
 const HVAC_MODES = {
   OFF: "OFF",
   HEAT: "HEAT",
   COOL: "COOL",
-}
+};
 
-class HVAC {
+class HVAC extends Device {
   constructor(config) {
+    super(config);
     console.log("HVAC using config", config);
     console.log("HVAC DEVICE CREATED");
 
     //InConfig
     this.id = config.deviceId;
-    this.tempSensorId = config.TempSensorId;
+    this.tempSensorId = config.tempSensorId;
     this.getTempSensor = config.getTempSensor;
     this.changeAmbientTemp = config.changeAmbientTempFunction;
     this.type = "HVAC";
@@ -32,6 +33,26 @@ class HVAC {
     this.targetTemp = temp;
   }
 
+  startTransmission() {
+    this.timer = setInterval(() => {
+      this.sendDatatoWS({
+        category: "device",
+        deviceId: this.id,
+        value: this.mode,
+        timestamp: Date.now(),
+      });
+    }, this.interval);
+  }
+
+  itemize() {
+    return {
+      type: this.type,
+      id: this.id,
+      tempSensorId: this.tempSensorId,
+      targetTemp: this.targetTemp,
+      mode: this.mode,
+    };
+  }
   simulate() {
     //CALED in HVAC SIMUL FUNCTION
 
@@ -44,7 +65,7 @@ class HVAC {
 
     const currentTemp = TempSensor.getValue();
 
-   // console.log("Temp sensor says", currentTemp);
+    // console.log("Temp sensor says", currentTemp);
 
     //dt is amount of time passed since last update in seconds
 

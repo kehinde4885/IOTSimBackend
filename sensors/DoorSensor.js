@@ -12,7 +12,7 @@ class DoorSensor extends Sensor {
     return this.value;
   }
 
-  start() {
+  startTransmission() {
     if (this.timer) return;
 
     this.timer = setInterval(() => {

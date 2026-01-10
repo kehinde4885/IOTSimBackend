@@ -26,5 +26,12 @@ export function createDeviceRoutes(devManager) {
     }
   });
 
+   //DELETE DEVICE
+  router.delete("/:id", (req, res) => {
+    //delete sensors
+    devManager.deleteDevice(req.params.id);
+    res.send("device deleted");
+  });
+
   return router;
 }

@@ -22,8 +22,8 @@ class SensorManager {
     // create sensor
     let sensor = this.helpCreateSensor(config);
 
-    //start sensor
-    sensor.start();
+    //start sensor transmission overwebsocket
+    sensor.startTransmission();
 
     //store sensor in key value pair
     this.sensors.set(sensor.sensorId, sensor);

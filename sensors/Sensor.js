@@ -15,7 +15,7 @@ export default class Sensor {
     //used to get the value of sensor
   }
 
-  start() {
+  startTransmission() {
     //used to send updates to the websocket server
     //override in child subclass
   }

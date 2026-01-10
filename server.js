@@ -15,7 +15,7 @@ const envManager = new EnvManager();
 
 const sensorManager = new SensorManager(sendOverWebSocket, envManager);
 
-const devManager = new DeviceManager(envManager, sensorManager);
+const devManager = new DeviceManager(envManager, sensorManager, sendOverWebSocket);
 
 //START SIMULATIONS
 startSensorSimulation(sensorManager);

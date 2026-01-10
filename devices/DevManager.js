@@ -1,17 +1,18 @@
 import { DeviceRegistry } from "./DeviceRegistry.js";
 
 export class DeviceManager {
-  constructor(envManager, sensorManager) {
+  constructor(envManager, sensorManager, sendOverWebSocket) {
     this.devices = new Map();
     this.envManager = envManager;
     this.sensorManager = sensorManager;
+    this.sendOverWebSocket = sendOverWebSocket;
 
     // console.log(this.sensorManager);
     // console.log(sensorManager);
   }
 
   getDeviceTypes() {
-    return Object.keys(DeviceRegistry)
+    return Object.keys(DeviceRegistry);
   }
 
   //***create device based on config
@@ -36,7 +37,18 @@ export class DeviceManager {
 
     let device = this.helpCreateDevice(config);
 
+    device.startTransmission();
+
     this.devices.set(config.deviceId, device);
+  }
+
+  deleteDevice(deviceId) {
+    const device = this.devices.get(deviceId);
+
+    if (!device) return;
+
+    device.stop();
+    this.devices.delete(deviceId);
   }
 
   simulateAll() {
@@ -48,7 +60,7 @@ export class DeviceManager {
   listDevices() {
     //returns an array of devices
     return [...this.devices.values()].map((device) => {
-      return device;
+      return device.itemize();
 
       //      return s.itemize();
     });
@@ -65,10 +77,8 @@ export class DeviceManager {
 
     return new DeviceClass({
       ...config,
+      sendOverWebSocket: this.sendOverWebSocket,
       ...inject(this),
-      // getTempSensor: (id) => this.sensorManager.getSensor(id),
-      // changeAmbientTempFunction: (change) =>
-      //   this.envManager.changeAmbientTemperature(change),
     });
   }
 }

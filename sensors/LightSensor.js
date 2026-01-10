@@ -12,7 +12,7 @@ class LightSensor extends Sensor {
     return this.value;
   }
 
-  start() {
+  startTransmission() {
     //override start to send immediate data on start
     //super.start();
 
