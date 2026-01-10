@@ -8,7 +8,6 @@ class Fan extends Device {
 
     this.id = config.deviceId, 
     this.type = "FAN"
-    this.isOn = true;
     this.interval = config.interval;
 
     //could Affect ambient temp later
@@ -38,9 +37,7 @@ class Fan extends Device {
     //This is where it would touch ambient Temp
   }
 
-  update() {
-    this.isOn = !this.isOn;
-  }
+
 }
 
 export { Fan };

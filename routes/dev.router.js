@@ -8,10 +8,13 @@ export function createDeviceRoutes(devManager) {
     res.json(devManager.listDevices());
   });
 
+
+  //
   router.get("/types", (req, res) => {
     res.json(devManager.getDeviceTypes());
   });
 
+  //CREATE DEVICE
   router.post("/create", (req, res) => {
     console.log("Creating Device");
 
@@ -25,6 +28,25 @@ export function createDeviceRoutes(devManager) {
       console.log(error);
     }
   });
+
+
+  //TOGGLE DEVICE POWER
+  router.post("/toggleSwitch/:id", (req, res) => {
+ 
+    const { id } = req.params;
+    const device = devManager.getDevice(id)
+    
+       if (!device) {
+      return res.status(404).json({ error: "Device not found" });
+    }
+
+    device.togglePower();
+
+    res.json({ success: true });
+
+
+    
+  })
 
    //DELETE DEVICE
   router.delete("/:id", (req, res) => {

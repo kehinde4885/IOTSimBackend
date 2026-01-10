@@ -11,6 +11,10 @@ export class DeviceManager {
     // console.log(sensorManager);
   }
 
+  getDevice(id) {
+    return this.devices.get(id) || null;
+  }
+
   getDeviceTypes() {
     return Object.keys(DeviceRegistry);
   }

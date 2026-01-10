@@ -37,6 +37,7 @@ class HVAC extends Device {
     this.timer = setInterval(() => {
       this.sendDatatoWS({
         category: "device",
+        isOn: this.isOn,
         deviceId: this.id,
         value: this.mode,
         timestamp: Date.now(),
@@ -46,6 +47,7 @@ class HVAC extends Device {
 
   itemize() {
     return {
+      isOn: this.isOn,
       type: this.type,
       id: this.id,
       tempSensorId: this.tempSensorId,
@@ -53,12 +55,18 @@ class HVAC extends Device {
       mode: this.mode,
     };
   }
+
   simulate() {
     //CALED in HVAC SIMUL FUNCTION
 
     const TempSensor = this.getTempSensor(this.tempSensorId);
 
     if (!TempSensor) {
+      this.mode = HVAC_MODES.OFF;
+      return;
+    }
+
+    if (!this.isOn) {
       this.mode = HVAC_MODES.OFF;
       return;
     }

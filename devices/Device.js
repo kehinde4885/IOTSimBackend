@@ -2,6 +2,7 @@ export default class Device {
   constructor(config) {
     this.sendDatatoWS = config.sendOverWebSocket;
     this.timer = null;
+    this.isOn = true;
   }
 
   startTransmission() {
@@ -14,5 +15,9 @@ export default class Device {
       clearInterval(this.timer);
       this.timer = null;
     }
+  }
+
+  togglePower() {
+    this.isOn = !this.isOn;
   }
 }
