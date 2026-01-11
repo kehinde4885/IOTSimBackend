@@ -3,6 +3,8 @@ export default class Device {
     this.sendDatatoWS = config.sendOverWebSocket;
     this.timer = null;
     this.isOn = true;
+    this.type = config.deviceType;
+    this.interval = config.interval;
   }
 
   startTransmission() {

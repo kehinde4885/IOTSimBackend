@@ -1,15 +1,13 @@
 import Device from "./Device.js";
 
-class Fan extends Device {
+class ALARM extends Device {
   constructor(config) {
-    super(config)
-    console.log("Fan using Config", config);
-    console.log("FAN CREATED");
+    super(config);
+
+    console.log("ALARM using config", config);
+    console.log("ALARM BEEPER CREATED");
 
     this.id = config.deviceId;
- 
-
-    //could Affect ambient temp later
   }
 
   startTransmission() {
@@ -18,9 +16,9 @@ class Fan extends Device {
         category: "device",
         deviceId: this.id,
         value: this.isOn,
-        timestamp: Date.now()
-      })
-    },this.interval)
+        timestamp: Date.now(),
+      });
+    }, this.interval);
   }
 
   itemize() {
@@ -28,15 +26,14 @@ class Fan extends Device {
       id: this.id,
       isOn: this.isOn,
       type: this.type,
-      interval: this.interval
-    }
+      interval: this.interval,
+    };
   }
 
   simulate() {
-    //This is where it would touch ambient Temp
+    //Alam sensor does not
+    //really need simulate does it?
   }
-
-
 }
 
-export { Fan };
+export { ALARM };

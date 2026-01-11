@@ -17,7 +17,7 @@ class HVAC extends Device {
     this.tempSensorId = config.tempSensorId;
     this.getTempSensor = config.getTempSensor;
     this.changeAmbientTemp = config.changeAmbientTempFunction;
-    this.type = "HVAC";
+    
 
     //InConfig
 

@@ -1,5 +1,6 @@
 import { HVAC } from "./Hvac.js";
 import { Fan } from "./Fan.js";
+import { ALARM } from "./Alarm.js";
 
 export const DeviceRegistry = {
   HVAC: {
@@ -15,6 +16,11 @@ export const DeviceRegistry = {
 
   FAN: {
     class: Fan,
+    inject: () => ({}),
+  },
+
+  ALARM: {
+    class: ALARM,
     inject: () => ({}),
   },
 };
