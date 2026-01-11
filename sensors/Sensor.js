@@ -32,7 +32,7 @@ export default class Sensor {
     //return basic info about the sensor
   }
 
-  update() {
+  toggleSensor() {
     //overriden in child subclass``
   }
 

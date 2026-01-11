@@ -1,27 +1,24 @@
 import Sensor from "./Sensor.js";
 
-class LightSensor extends Sensor {
+export default class SmokeSensor extends Sensor {
   constructor(config) {
-    super({ ...config, type: "Light" });
+    super({ ...config, type: "Smoke" });
 
-    //on by default
-    this.value = true;
+    this.isSmoke = false;
   }
 
   getValue() {
-    return this.value;
+    return this.isSmoke;
   }
 
   startTransmission() {
-    //override start to send immediate data on start
-    //super.start();
-
     if (this.timer) return;
 
     this.timer = setInterval(() => {
       this.sendDataToWS({
+        category: "sensor",
         sensorId: this.sensorId,
-        value: this.value,
+        value: this.isSmoke,
         timestamp: Date.now(),
       });
     }, this.interval);
@@ -32,17 +29,15 @@ class LightSensor extends Sensor {
       sensorId: this.sensorId,
       type: this.type,
       interval: this.interval,
-      value: this.value,
+      value: this.isSmoke,
     };
   }
 
   simulate() {
-    //toggle light state
+    
   }
 
   toggleSensor() {
-    this.value = !this.value;
+    this.isSmoke = !this.isSmoke
   }
 }
-
-export { LightSensor };

@@ -29,7 +29,8 @@ export function createSensorRoutes(sensorManager) {
   });
 
   //UPDATE SENSOR
-  router.post("/update/:id", (req, res) => {
+  // ===Change route name to match function
+  router.post("/toggle/:id", (req, res) => {
     const { id } = req.params;
 
     const sensor = sensorManager.getSensor(id);
@@ -38,7 +39,7 @@ export function createSensorRoutes(sensorManager) {
       return res.status(404).json({ error: "Sensor not found" });
     }
 
-    sensor.update();
+    sensor.toggleSensor();
 
     res.json({ success: true });
   });

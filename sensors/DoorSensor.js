@@ -37,7 +37,7 @@ class DoorSensor extends Sensor {
     //super.simulate()
   }
 
-  update() {
+  toggleSensor() {
     this.value = !this.value;
   }
 }

@@ -28,7 +28,7 @@ class TemperatureSensor extends Sensor {
     }, this.interval);
   }
 
-  update() {}
+  toggleSensor() {}
 
   itemize() {
     return {

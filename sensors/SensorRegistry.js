@@ -1,6 +1,7 @@
 import TemperatureSensor from "./TemperatureSensor.js";
 import { LightSensor } from "./LightSensor.js";
 import { DoorSensor } from "./DoorSensor.js";
+import SmokeSensor from "./SmokeSensor.js";
 
 //SensorRegistry Object
 export const SensorRegistry = {
@@ -26,6 +27,9 @@ export const SensorRegistry = {
     class: DoorSensor,
     inject: () => ({}),
   },
+
+  Smoke: {
+    class: SmokeSensor,
+    inject: () => ({}),
+  },
 };
-
-
