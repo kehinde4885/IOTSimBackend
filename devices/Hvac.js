@@ -1,4 +1,5 @@
 import Device from "./Device.js";
+import { eventBus } from "../eventBus.js";
 
 const HVAC_MODES = {
   OFF: "OFF",
@@ -15,9 +16,7 @@ class HVAC extends Device {
     //InConfig
     this.id = config.deviceId;
     this.tempSensorId = config.tempSensorId;
-    this.getTempSensor = config.getTempSensor;
     this.changeAmbientTemp = config.changeAmbientTempFunction;
-    
 
     //InConfig
 
@@ -27,6 +26,71 @@ class HVAC extends Device {
     this.coolingRate = 0.05;
     this.tolerance = 0.5;
     this.targetTemp = 24;
+    
+
+    //EVENT LINKING
+    this.tempEventHandler = this.handleTempEvent.bind(this);
+
+    this.subscribe();
+  }
+
+  subscribe() {
+    eventBus.on("Temperature:changed", this.tempEventHandler);
+  }
+
+  unsubscribe() {
+    eventBus.off("Temperature:changed", this.tempEventHandler);
+  }
+
+  handleTempEvent(event) {
+    const sensorId = event.sensorId;
+    const value = event.value;
+    const dt = event.dt
+
+    if (!this.tempSensorId === sensorId) {
+      return;
+    }
+
+    if (!this.isOn) {
+      this.mode = HVAC_MODES.OFF;
+  
+      return;
+    }
+
+    const currentTemp = value;
+
+    console.log(dt)
+  
+
+    // console.log("Temp sensor says", currentTemp);
+
+    //dt is amount of time passed since last update in seconds
+
+    //return what the hvac should do based on current temperature
+    if (currentTemp > this.targetTemp + this.tolerance) {
+      this.mode = HVAC_MODES.COOL;
+    } else if (currentTemp < this.targetTemp - this.tolerance) {
+      this.mode = HVAC_MODES.HEAT;
+    } else {
+      this.mode = HVAC_MODES.OFF;
+    }
+
+    //console.log("HVAC in mode:", this.mode);
+    //Apply physical effect
+    let change = 0;
+    //return by how much the temperature should change
+    if (this.mode === HVAC_MODES.HEAT) {
+      change = this.heatingRate * dt;
+    }
+    if (this.mode === HVAC_MODES.COOL) {
+      change = -this.coolingRate * dt;
+    }
+
+    //get ambient temperature and change it
+    //GET env manager
+    this.changeAmbientTemp(change);
+
+    return 0; //no change
   }
 
   setTargetTemp(temp) {
@@ -58,50 +122,11 @@ class HVAC extends Device {
 
   simulate() {
     //CALED in HVAC SIMUL FUNCTION
+  }
 
-    const TempSensor = this.getTempSensor(this.tempSensorId);
-
-    if (!TempSensor) {
-      this.mode = HVAC_MODES.OFF;
-      return;
-    }
-
-    if (!this.isOn) {
-      this.mode = HVAC_MODES.OFF;
-      return;
-    }
-
-    const currentTemp = TempSensor.getValue();
-
-    // console.log("Temp sensor says", currentTemp);
-
-    //dt is amount of time passed since last update in seconds
-
-    //return what the hvac should do based on current temperature
-    if (currentTemp > this.targetTemp + this.tolerance) {
-      this.mode = HVAC_MODES.COOL;
-    } else if (currentTemp < this.targetTemp - this.tolerance) {
-      this.mode = HVAC_MODES.HEAT;
-    } else {
-      this.mode = HVAC_MODES.OFF;
-    }
-
-    //console.log("HVAC in mode:", this.mode);
-    //Apply physical effect
-    let change = 0;
-    //return by how much the temperature should change
-    if (this.mode === HVAC_MODES.HEAT) {
-      change = this.heatingRate;
-    }
-    if (this.mode === HVAC_MODES.COOL) {
-      change = -this.coolingRate;
-    }
-
-    //get ambient temperature and change it
-    //GET env manager
-    this.changeAmbientTemp(change);
-
-    return 0; //no change
+  stop() {
+    super.stop();
+    this.unsubscribe();
   }
 
   getmode() {

@@ -1,4 +1,5 @@
 import Sensor from "./Sensor.js";
+import { eventBus } from "../eventBus.js";
 
 class TemperatureSensor extends Sensor {
   constructor(config) {
@@ -12,6 +13,8 @@ class TemperatureSensor extends Sensor {
 
     this.minTemp = config.minTemp ?? 0;
     this.maxTemp = config.maxTemp ?? 100;
+
+    this.lastUpdated = Date.now();
   }
 
   getValue() {
@@ -53,6 +56,15 @@ class TemperatureSensor extends Sensor {
       this.minTemp,
       Math.min(this.currentTemp, this.maxTemp)
     );
+
+    const dt = (Date.now() - this.lastUpdated) / 1000;
+    this.lastUpdated = Date.now();
+
+    eventBus.emit("Temperature:changed", {
+      sensorId: this.sensorId,
+      value: this.currentTemp,
+      dt: dt,
+    });
   }
 }
 

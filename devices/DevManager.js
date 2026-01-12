@@ -1,14 +1,11 @@
 import { DeviceRegistry } from "./DeviceRegistry.js";
 
 export class DeviceManager {
-  constructor(envManager, sensorManager, sendOverWebSocket) {
+  constructor(envManager,sendOverWebSocket) {
     this.devices = new Map();
     this.envManager = envManager;
-    this.sensorManager = sensorManager;
     this.sendOverWebSocket = sendOverWebSocket;
 
-    // console.log(this.sensorManager);
-    // console.log(sensorManager);
   }
 
   getDevice(id) {

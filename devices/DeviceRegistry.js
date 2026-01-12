@@ -8,7 +8,6 @@ export const DeviceRegistry = {
     //Dependencies
     //Object Literal
     inject: (manager) => ({
-      getTempSensor: (id) => manager.sensorManager.getSensor(id),
       changeAmbientTempFunction: (change) =>
         manager.envManager.changeAmbientTemperature(change),
     }),
