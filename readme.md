@@ -11,4 +11,4 @@ Internet of Things Simulator for HMI Project
 ---> SensorRegistry---> GUI----> SensorManager
 
 
-
+-Look into converting the Temp HVAC relationship to event based

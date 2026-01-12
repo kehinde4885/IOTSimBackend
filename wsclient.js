@@ -20,7 +20,7 @@ socket.addEventListener("close", () => {
 });
 
 function sendOverWebSocket(data) {
-  //console.log(JSON.stringify(data))
+ // console.log(JSON.stringify(data))
   if (socket.readyState === WebSocket.OPEN) {
     socket.send(JSON.stringify(data));
   }

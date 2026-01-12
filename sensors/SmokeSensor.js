@@ -1,4 +1,5 @@
 import Sensor from "./Sensor.js";
+import { eventBus } from "../eventBus.js";
 
 export default class SmokeSensor extends Sensor {
   constructor(config) {
@@ -33,11 +34,14 @@ export default class SmokeSensor extends Sensor {
     };
   }
 
-  simulate() {
-    
-  }
+  simulate() {}
 
   toggleSensor() {
-    this.isSmoke = !this.isSmoke
+    this.isSmoke = !this.isSmoke;
+
+    eventBus.emit("smoke:changed", {
+      sensorId: this.sensorId,
+      value: this.isSmoke,
+    });
   }
 }
