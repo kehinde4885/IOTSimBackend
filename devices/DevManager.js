@@ -38,6 +38,7 @@ export class DeviceManager {
 
     let device = this.helpCreateDevice(config);
 
+    console.log("Dev Manager starting Transmission")
     device.startTransmission();
 
     this.devices.set(config.deviceId, device);
